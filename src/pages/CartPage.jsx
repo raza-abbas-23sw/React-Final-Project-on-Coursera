@@ -1,5 +1,6 @@
 import { useCart } from "../context/CartContext";
 import { Container, Table, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const CartPage = () => {
   const { cart, removeFromCart, updateQuantity } = useCart();
@@ -28,19 +29,44 @@ const CartPage = () => {
                   <td>{item.name}</td>
                   <td>${item.price}</td>
                   <td>
-                    <Button variant="outline-secondary" size="sm" onClick={() => updateQuantity(item.id, item.quantity - 1)}>➖</Button>
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      disabled={item.quantity <= 1}
+                    >
+                      ➖
+                    </Button>
                     <span className="mx-2">{item.quantity}</span>
-                    <Button variant="outline-secondary" size="sm" onClick={() => updateQuantity(item.id, item.quantity + 1)}>➕</Button>
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    >
+                      ➕
+                    </Button>
                   </td>
                   <td>${(item.price * item.quantity).toFixed(2)}</td>
                   <td>
-                    <Button variant="danger" size="sm" onClick={() => removeFromCart(item.id)}>Remove</Button>
+                    <Button variant="danger" size="sm" onClick={() => removeFromCart(item.id)}>
+                      Remove
+                    </Button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </Table>
           <h3 className="text-end mt-4">Total: ${totalCost.toFixed(2)}</h3>
+
+          {/* Checkout and Continue Shopping Buttons */}
+          <div className="d-flex justify-content-between mt-4">
+            <Link to="/products">
+              <Button variant="warning" size="lg">Continue Shopping</Button>
+            </Link>
+            <Button variant="success" size="lg" onClick={() => alert("Coming Soon")}>
+              Checkout
+            </Button>
+          </div>
         </>
       )}
     </Container>
